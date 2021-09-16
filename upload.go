@@ -1,21 +1,17 @@
 package main
 
 import (
-	// "io/ioutil"
 	"encoding/csv"
-	"html/template"
+	"fmt"
 	"log"
 	"net/http"
-
-	// "os"
-	// "path/filepath"
-	"fmt"
+	"text/template"
 )
 
 type layout struct {
-	layaut1 string
-	layaut2 string
-	layaut3 string
+	Layout1 string
+	Layout2 string
+	Layout3 string
 }
 
 var tpl *template.Template
@@ -33,26 +29,24 @@ func uploadHandler(w http.ResponseWriter, req *http.Request) {
 
 	reader := csv.NewReader(file)
 	var line []string
-	layauts := make([]layout, 0)
+	// layauts := make([]layout, 0)
+	var layouts []layout
 	for {
 		i := 0
 		line, err = reader.Read()
 		if err != nil {
 			break
 		}
-		layauts = append(layauts, layout{line[0], line[1], line[2]})
+		layouts = append(layouts, layout{line[0], line[1], line[2]})
 		i++
 	}
-	fmt.Println(layauts[1].layaut1)
+	fmt.Println(layouts[0].Layout1)
 
-	// line, err = reader.ReadAll()
-	// fmt.Println(line)
-
-	err2 := tpl.ExecuteTemplate(w, "upload.html", layauts)
+	err2 := tpl.ExecuteTemplate(w, "upload.html", layouts)
 	if err2 != nil {
 		log.Fatalln(err2)
 	}
 
-	w.Header()["Location"] = []string{"/upload"}
-	w.WriteHeader(http.StatusTemporaryRedirect)
+	// w.Header()["Location"] = []string{"/upload"}
+	// w.WriteHeader(http.StatusTemporaryRedirect)
 }
