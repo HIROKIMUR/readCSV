@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/csv"
-	"fmt"
 	"log"
 	"net/http"
 	"text/template"
@@ -40,7 +39,6 @@ func uploadHandler(w http.ResponseWriter, req *http.Request) {
 		layouts = append(layouts, layout{line[0], line[1], line[2]})
 		i++
 	}
-	fmt.Println(layouts[0].Layout1)
 
 	err2 := tpl.ExecuteTemplate(w, "upload.html", layouts)
 	if err2 != nil {
